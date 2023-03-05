@@ -14,4 +14,11 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
 # Backend
+
+The backend is buid on django using django restframework -https://www.djangoproject.com/ -https://www.django-rest-framework.org/
+Authentication is handled using djoser -https://djoser.readthedocs.io/en/latest/getting_started.html
+Debugging too is django debug tool bar -https://django-debug-toolbar.readthedocs.io/en/latest/
+The database used is PostgreSQL -https://www.postgresql.org/
+django-environ to read environment variables
