@@ -9,7 +9,7 @@ class Business(models.Model):
     address = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    picture = models.ImageField(null=True)
+    image = models.ImageField(upload_to='business/images', null=True)
     status  = models.CharField(max_length=255)
 
 
@@ -33,13 +33,13 @@ class Service(models.Model):
 
 
 class ServiceImage(models.Model):
-    name = models.CharField(max_length=255)
-    service = models.ForeignKey(to=Service, on_delete=models.CASCADE, related_name='photos')
+    service = models.ForeignKey(to=Service, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='services/images')
 
 
-class ServiceVideos(models.Model):
-    name = models.CharField(max_length=255)
+class ServiceVideo(models.Model):
     service = models.ForeignKey(to=Service, on_delete=models.CASCADE, related_name='videos')
+    video = models.FileField(upload_to='services/videos')
 
 
 class Request(models.Model):
@@ -47,8 +47,8 @@ class Request(models.Model):
     title = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     description = models.TextField()
-    photo = models.CharField(max_length=255)
-    video = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='request/images', null=True)
+    video = models.FileField(upload_to='request/videos', null=True)
     created_at = models.DateTimeField(auto_now=True)
     delivery_at = models.DateTimeField(null=True)
     duration_in_hours = models.FloatField(null=True)
@@ -70,3 +70,10 @@ class Booking(models.Model):
     transport_per_km = models.DecimalField(max_digits=6, decimal_places=2)
     address = models.CharField(max_length=255)
     status = models.CharField(choices=STATUS_CHOICES, max_length=1, default=STATUS_CHOICES[0][0])
+
+
+class Review(models.Model):
+    service = models.ForeignKey(to=Service, on_delete=models.CASCADE, related_name='reviews')
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    date = models.DateField(auto_now_add=True)
