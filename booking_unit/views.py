@@ -3,9 +3,9 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import (CreateBusinessSerializer, CreateServiceSerializer, ServiceImageSerializer,
-                           ServiceVideoSerializer, ReviewSerializer)
+                           ServiceVideoSerializer, ReviewSerializer, RequestSerializer)
 from .models import (Business, Booking, Service, ServiceImage,
-                      ServiceVideo, Review)
+                      ServiceVideo, Review, Request)
 
 class BusinessViewSet(ModelViewSet):
     serializer_class = CreateBusinessSerializer
@@ -60,5 +60,15 @@ class ServiceVideoViewSet(ModelViewSet):
     
     
 class ReviewViewSet(ModelViewSet):
-    queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        return Review.objects.filter(service_id=self.kwargs['service_pk'])
+    
+    def get_serializer_context(self):
+        return {'service_id': self.kwargs['service_pk']}
+    
+
+class RequestViewSet(ModelViewSet):
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer
