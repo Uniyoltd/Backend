@@ -40,7 +40,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class CreateBusinessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Business
-        fields = [ 'owner_id', 'name', 'email', 'phone_number', 'address', 'description', 'picture']
+        fields = [ 'owner', 'name', 'email', 'phone_number', 'address', 'description', 'image']
 
 
 
