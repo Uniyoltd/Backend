@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
 from .models import (Business, Service, ServiceImage, 
-                     ServiceVideo, Review, Request)
+                     ServiceVideo, Review, Request, Offer)
+
+
 
 
 class ServiceImageSerializer(serializers.ModelSerializer):
@@ -40,7 +42,13 @@ class ReviewSerializer(serializers.ModelSerializer):
 class CreateBusinessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Business
-        fields = [ 'owner', 'name', 'email', 'phone_number', 'address', 'description', 'image']
+        fields = [ 'id', 'owner', 'name', 'email', 'phone_number', 'address', 'description', 'image']
+
+
+class BusinessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Business
+        fields = ['id', 'owner', 'name', 'description', 'image', 'address']
 
 
 
@@ -56,4 +64,25 @@ class CreateServiceSerializer(serializers.ModelSerializer):
 class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = Request
-        fields = '__all__'
+        fields = ['customer', 'title','image', 'video', 'price', 'created_at', 'delivery_at', 'status', 'description', 'duration_in_hours', ]
+
+class CreateOfferSerializer(serializers.ModelSerializer):
+    business_id = serializers.IntegerField()
+    class Meta:
+        model = Offer
+        fields = ['id', 'business_id', 'description', 'price']
+
+
+    def create(self, validated_data):
+        request_id = self.context.get('request_id')
+        return Offer.objects.create(request_id=request_id, **validated_data)
+
+
+class OfferSerializer(serializers.ModelSerializer):
+    request = RequestSerializer()
+    business = BusinessSerializer()
+
+    class Meta:
+        model = Offer
+        fields = ['id', 'request', 'business', 'description', 'price']
+        

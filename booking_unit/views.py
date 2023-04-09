@@ -1,11 +1,14 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404 
+from rest_framework import status
 
 from .serializers import (CreateBusinessSerializer, CreateServiceSerializer, ServiceImageSerializer,
-                           ServiceVideoSerializer, ReviewSerializer, RequestSerializer)
+                           ServiceVideoSerializer, ReviewSerializer, RequestSerializer,
+                           CreateOfferSerializer, OfferSerializer)
 from .models import (Business, Booking, Service, ServiceImage,
-                      ServiceVideo, Review, Request)
+                      ServiceVideo, Review, Request, Offer)
 
 class BusinessViewSet(ModelViewSet):
     serializer_class = CreateBusinessSerializer
@@ -72,3 +75,27 @@ class ReviewViewSet(ModelViewSet):
 class RequestViewSet(ModelViewSet):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
+
+
+class OfferViewSet(ModelViewSet):
+    queryset = Offer.objects.all()
+
+    def get_serializer_class(self):
+
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return CreateOfferSerializer
+        return OfferSerializer
+    
+    def get_serializer_context(self):
+        return {'request_id': self.kwargs['request_pk']}
+    
+    def destroy(self, request, *args, **kwargs):
+        offer = get_object_or_404(Offer, pk=kwargs.get('pk'))
+        if offer.business.owner.id != self.request.user.id:
+            return  Response(
+                {
+                    "error": "You are not authorized to delete this offer."
+                },
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+            )
+        return super().destroy(request, *args, **kwargs)

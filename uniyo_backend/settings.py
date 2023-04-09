@@ -173,3 +173,10 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = "users.User"
+#configuration for sending emails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 2525
+DEFAULT_FROM_EMAIL = "from@uniyo.com"
+EMAIL_HOST_USER = ""
+EMAIL_HOST_PASSWORD = ""
