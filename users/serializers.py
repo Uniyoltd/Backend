@@ -1,4 +1,5 @@
 from django.contrib.auth.models import update_last_login
+from .models import User
 from rest_framework import serializers
 from djoser.serializers import UserSerializer as BaseUserSerializer, UserCreateSerializer as BaseUserCreateSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer as BaseTokenObtainPairSerializer
@@ -21,8 +22,7 @@ class UserUpdateSerializer(BaseUserSerializer):
 
 class TokenObtainPairSerializer(BaseTokenObtainPairSerializer):
     @classmethod
-    def get_token(cls, user):
-        user_dict = user.get_user()
+    def get_token(cls, user: User):
         token = super().get_token(user)
 
          # Add custom claims
@@ -31,8 +31,8 @@ class TokenObtainPairSerializer(BaseTokenObtainPairSerializer):
         token['phone_number'] = user.phone_number
         token['email'] = user.email
         token['is_verified'] = user.is_verified
-        token['address'] = user_dict['address']
-        token['profile_picture'] = user_dict['profile_picture']
+        token['address'] = user.address
+        token['profile_picture'] = user.get_profile_picture()
         
         # ...
 

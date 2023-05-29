@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -25,6 +26,10 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"username": self.username})
+    
+    
+    def get_profile_picture(self) -> str:
+        return settings.MEDIA_URL + str(self.profile_picture)
 
     def get_user(self):
         return {
@@ -34,7 +39,7 @@ class User(AbstractUser):
             'phone_number': self.phone_number,
             'is_verified': self.is_verified,
             'address': self.address,
-            'profile_picture': str(self.profile_picture)
+            'profile_picture': self.get_profile_picture()
         }
 
 
