@@ -1,4 +1,6 @@
+from django.urls import path
 from rest_framework_nested import routers
+
 from . import views
 
 router = routers.DefaultRouter()
@@ -14,3 +16,10 @@ services_router.register('videos', views.ServiceVideoViewSet, basename='service-
 
 
 urlpatterns = router.urls + services_router.urls + request_router.urls
+urlpatterns += [
+    # path('booking_page', views.booking_payment, name='booking_page'),
+    # path('booking_successful', views.booking_sucessful, name='booking_successful'),
+    # path('booking_cancelled', views.booking_cancelled, name='booking_cancelled'),
+    path('stripe_webhook/', views.stripe_webhook, name='stripe_webhook'),
+    path('email/', views.send_email, name='send_email'),
+]

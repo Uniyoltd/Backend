@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import (Business, Service, ServiceImage, 
-                     ServiceVideo, Review, Request, Offer)
+from .models import (Business, Service, ServiceImage, Payment, 
+                     ServiceVideo, Review, Request, Offer, Booking)
 
 
 
@@ -85,4 +85,16 @@ class OfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = ['id', 'request', 'business', 'description', 'price']
-        
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ["id", "booking", 'amount', 'stripe_checkout_id', 'status', 'paid_at']
+
+
+class BookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Booking
+        fields = ['id', "service", "duration_in_hours", "transport_per_km", "price", "address", "delivery_at"]
+

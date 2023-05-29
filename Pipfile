@@ -12,6 +12,9 @@ django-environ = "*"
 psycopg2 = "*"
 pillow = "*"
 drf-nested-routers = "*"
+stripe = "*"
+boto3 = "*"
+django-storages = "*"
 
 [dev-packages]
 

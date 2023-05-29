@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 class Business(models.Model):
     owner = models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -89,3 +91,20 @@ class Review(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateField(auto_now_add=True)
+
+
+class Payment(models.Model):
+    PAYMENT_STATUSES = [
+        ('P', 'Pending'),
+        ('C', 'Completed')
+    ]
+    stripe_checkout_id = models.CharField(max_length=500, unique=True, null=True)
+    booking = models.OneToOneField(to=Booking, on_delete=models.CASCADE, related_name='payment') 
+    status = models.CharField(max_length=1, default=PAYMENT_STATUSES[0][0])
+    paid_at = models.DateTimeField(auto_now=True)
+
+
+@receiver(post_save, sender=Booking)
+def create_booking_payment(sender, instance, created, **kwargs):
+    if created:
+        Payment.objects.create(booking=instance)
