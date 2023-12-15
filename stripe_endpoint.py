@@ -40,15 +40,25 @@ app = Flask(__name__)
 @app.route("/create-payment-intent", methods=["POST"])
 def create_payment_intent():
     # Extract payment data from the request
-    amount = request.json["amount"]
+    amount = request.json.get("amount")
+    currency = request.json.get("currency", 'usd')
+    payment_method_types = request.json.get("payment_method_types", ['card'])
+
+    if not amount:
+        return jsonify({'error': 'No amount in the request'}), 400
+
     # Create a PaymentIntent
-    intent = stripe.PaymentIntent.create(
-        amount=amount,
-        currency='usd',
-    )
-    return jsonify({
-      'clientSecret': intent['client_secret']
-    })
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=amount,
+            currency=currency,
+            payment_method_types=payment_method_types,
+        )
+        return jsonify({
+          'clientSecret': intent['client_secret']
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == "__main__":
     app.run(port=4242)
