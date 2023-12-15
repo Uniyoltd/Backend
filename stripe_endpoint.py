@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-STRIPE_SECRET_KEY = os.getenv("STRIPE_TEST_KEY")
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY_TEST")
 
 app = Flask(__name__)
 
