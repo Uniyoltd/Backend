@@ -1,7 +1,8 @@
 import stripe
 from flask import Flask, request, jsonify
 
-export STRIPE_SECRET_KEY="pk_live_51HpeESHLc8y1CsAnFfFkXR4DcT0aYH7qFwuWO0J4Z0aHhSs4A7t4jbhdG7k4yRdsbfSWuJW8AdiJcJF5JToFTnBd00ELeJ23Fc"
+export STRIPE_SECRET_KEY="pk_test_51HpeESHLc8y1CsAnLsLMxbKbWUXWknhXna9UKn2bp7t4pERy8tdGhf7OsYc2HWQqcXraNXvKDSnTkwhcVQitYEbO00SfuhVZj0"
+# "pk_live_51HpeESHLc8y1CsAnFfFkXR4DcT0aYH7qFwuWO0J4Z0aHhSs4A7t4jbhdG7k4yRdsbfSWuJW8AdiJcJF5JToFTnBd00ELeJ23Fc"
 
 app = Flask(__name__)
 
