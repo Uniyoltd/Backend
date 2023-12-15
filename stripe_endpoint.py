@@ -1,8 +1,11 @@
 import stripe
 from flask import Flask, request, jsonify
+import os
+from dotenv import load_dotenv
 
-export STRIPE_SECRET_KEY="pk_test_51HpeESHLc8y1CsAnLsLMxbKbWUXWknhXna9UKn2bp7t4pERy8tdGhf7OsYc2HWQqcXraNXvKDSnTkwhcVQitYEbO00SfuhVZj0"
-# "pk_live_51HpeESHLc8y1CsAnFfFkXR4DcT0aYH7qFwuWO0J4Z0aHhSs4A7t4jbhdG7k4yRdsbfSWuJW8AdiJcJF5JToFTnBd00ELeJ23Fc"
+load_dotenv()
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
 
 app = Flask(__name__)
 
@@ -36,3 +39,6 @@ def confirm_payment_intent():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+app = Flask(__name__)
